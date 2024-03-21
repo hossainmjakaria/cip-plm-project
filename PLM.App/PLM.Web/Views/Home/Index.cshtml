@@ -1,0 +1,114 @@
+﻿@{
+    ViewData["Title"] = "PLM";
+}
+
+@* <div class="container">
+    <div class="row">
+        <div class="col">
+            <input type="text" id="tagNumberInput" placeholder="Enter car tag number">
+            <button id="checkInButton">Check In</button>
+            <button id="checkOutButton">Check Out</button>
+        </div>
+
+        <div class="col">
+            <div>Spot 1: Car ABC123</div>
+            <div>Spot 2: Empty</div>
+        </div>
+    </div>
+</div> *@
+@* <style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-primary,
+    .btn-danger {
+        border-radius: 10px;
+        padding: 10px 30px;
+        font-weight: bold;
+    }
+
+    .btn-info {
+        border-radius: 10px;
+        padding: 10px 20px;
+        font-weight: bold;
+    }
+
+    .modal-content {
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    header {
+        background-color: #343a40;
+        color: #fff;
+        padding: 20px 0;
+        text-align: center;
+    }
+
+    footer {
+        background-color: #343a40;
+        color: #fff;
+        padding: 20px 0;
+        text-align: center;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+    }
+</style> *@
+<div id="errorMessage" class="alert alert-danger" role="alert" ></div>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Check-in/Check-out</h5>
+                    <div class="mb-3">
+                        <label for="tagNumber" class="form-label">Tag Number</label>
+                        <input type="text" class="form-control" id="tagNumber" required>
+                    </div>
+                    <button type="button" class="btn btn-primary" id="checkInBtn">Check In</button>
+                    <button type="button" class="btn btn-danger" id="checkOutBtn">Check Out</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Parking Garage Snapshot</h5>
+                    <div id="parkingSnapshot">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-12 text-center">
+                <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#statsModal">View Stats</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="statsModal" tabindex="-1" aria-labelledby="statsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="statsModalLabel">Statistics</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Number of spots available: <span id="spotsAvailable">0</span></p>
+                <p>Today’s revenue: <span id="todaysRevenue">$0</span></p>
+                <p>Average number of cars per day (last 30 days): <span id="avgCarsPerDay">0</span></p>
+                <p>Average revenue per day (last 30 days): <span id="avgRevenuePerDay">$0</span></p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+﻿@model SnapshotViewModel
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Tag Number</th>
+                        <th>In</th>
+                        <th>Elapsed Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var transaction in Model?.Transactions!)
+                    {
+                        <tr>
+                            <td>@transaction.TagNumber</td>
+                            <td>@transaction.CheckInTime.ToString("HH:mm tt")</td>
+                            <td>@FormatElapsedTime(transaction.ElapsedHours)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@functions {
+    public string FormatElapsedTime(int elapsedHours) => (elapsedHours == 1 || elapsedHours == 0) ? $"{elapsedHours} hour" : $"{elapsedHours} hours";
+}
