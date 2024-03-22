@@ -2,67 +2,8 @@
     ViewData["Title"] = "PLM";
 }
 
-@* <div class="container">
-    <div class="row">
-        <div class="col">
-            <input type="text" id="tagNumberInput" placeholder="Enter car tag number">
-            <button id="checkInButton">Check In</button>
-            <button id="checkOutButton">Check Out</button>
-        </div>
-
-        <div class="col">
-            <div>Spot 1: Car ABC123</div>
-            <div>Spot 2: Empty</div>
-        </div>
-    </div>
-</div> *@
-@* <style>
-    body {
-        background-color: #f8f9fa;
-    }
-
-    .card {
-        border: none;
-        border-radius: 15px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .btn-primary,
-    .btn-danger {
-        border-radius: 10px;
-        padding: 10px 30px;
-        font-weight: bold;
-    }
-
-    .btn-info {
-        border-radius: 10px;
-        padding: 10px 20px;
-        font-weight: bold;
-    }
-
-    .modal-content {
-        border-radius: 15px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    header {
-        background-color: #343a40;
-        color: #fff;
-        padding: 20px 0;
-        text-align: center;
-    }
-
-    footer {
-        background-color: #343a40;
-        color: #fff;
-        padding: 20px 0;
-        text-align: center;
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-    }
-</style> *@
-<div id="errorMessage" class="alert alert-danger" role="alert" ></div>
+<div id="errorMessage" class="alert alert-danger" role="alert" style="display: none;"></div>
+<div id="successMessage" class="alert alert-success" role="alert" style="display: none;"></div>
 
 <div class="container mt-5">
     <div class="row">
@@ -88,27 +29,24 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-3">
-            <div class="col-md-12 text-center">
-                <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#statsModal">View Stats</button>
-            </div>
-        </div>
     </div>
 </div>
 
-<div class="modal fade" id="statsModal" tabindex="-1" aria-labelledby="statsModalLabel" aria-hidden="true">
+<button id="loadStatsButton" class="btn btn-primary">Load Statistics</button>
+<div class="modal fade" id="statisticsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="statsModalLabel">Statistics</h5>
+                <h5 class="modal-title">Parking Statistics</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <p>Number of spots available: <span id="spotsAvailable">0</span></p>
-                <p>Today’s revenue: <span id="todaysRevenue">$0</span></p>
-                <p>Average number of cars per day (last 30 days): <span id="avgCarsPerDay">0</span></p>
-                <p>Average revenue per day (last 30 days): <span id="avgRevenuePerDay">$0</span></p>
+            <div class="modal-body" id="statisticsModalBody">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
+
     </div>
 </div>

@@ -13,7 +13,6 @@ public class ParkingDataSeederRepository(SqlConnection connection) : IParkingDat
 {
     public async Task<bool> SeedAsync(int totalSpots)
     {
-
         try
         {
             using (var command = connection.CreateCommand())

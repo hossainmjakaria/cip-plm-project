@@ -1,17 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using PLM.Web.Models;
 using PLM.Web.Services;
-using System.Reflection;
 
 namespace PLM.Web.Controllers
 {
     public class HomeController(IParkingService service) : Controller
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
-
+        public IActionResult Index() => View();
+        
         [HttpPost("/checkin")]
         public async Task<IActionResult> CheckIn([FromBody] TagModel model)
         {
@@ -31,8 +27,13 @@ namespace PLM.Web.Controllers
         [HttpGet("/parking-snapshot")]
         public async Task<IActionResult> GetParkingSnapshot()
         {
-            var snapshots = await service.GetParkingSnapshot();
-            return PartialView("_ParkingSnapshot", snapshots);
+            return PartialView("_ParkingSnapshot", await service.GetParkingSnapshot());
+        }     
+        
+        [HttpGet("/parking-statistics")]
+        public async Task<IActionResult> GetParkingStatistics()
+        {
+            return PartialView("_ParkingStatistics", await service.GetParkingStatistics());
         }
     }
 }

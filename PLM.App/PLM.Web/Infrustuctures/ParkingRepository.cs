@@ -9,6 +9,7 @@ public interface IParkingRepository
     public Task<Response<Transaction>> RegisterCarArrival(string tagNumber);
     public Task<Response<Transaction>> UpdateCarCheckOutTime(string tagNumber, int hourlyFee);
     public Task<IEnumerable<Transaction>> GetParkingSnapshot();
+    public Task<ParkingStats> GetParkingStatistics();
 }
 
 public class ParkingRepository(SqlConnection connection) : IParkingRepository
@@ -23,9 +24,12 @@ public class ParkingRepository(SqlConnection connection) : IParkingRepository
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = Constants.SpRegisterCarArrival;
                 command.Parameters.AddWithValue("@TagNumber", tagNumber);
+                SqlParameter outParameter = new("@RowsAffected", SqlDbType.Int) { Direction = ParameterDirection.Output };
+                command.Parameters.Add(outParameter);
 
                 connection.Open();
-                int rowsAffected = await command.ExecuteNonQueryAsync();
+                await command.ExecuteNonQueryAsync();
+                int rowsAffected = Convert.ToInt32(outParameter.Value);
                 connection.Close();
 
                 response.IsSuccess = rowsAffected > 0;
@@ -58,12 +62,15 @@ public class ParkingRepository(SqlConnection connection) : IParkingRepository
                 command.CommandText = Constants.SpUpdateCarCheckOutTime;
                 command.Parameters.AddWithValue("@TagNumber", tagNumber);
                 command.Parameters.AddWithValue("@HourlyFee", hourlyFee);
+                SqlParameter outParameter = new("@RowsAffected", SqlDbType.Int) { Direction = ParameterDirection.Output };
+                command.Parameters.Add(outParameter);
 
                 connection.Open();
-                int result = await command.ExecuteNonQueryAsync();
+                await command.ExecuteNonQueryAsync();
+                int rowsAffected = Convert.ToInt32(outParameter.Value);
                 connection.Close();
 
-                response.IsSuccess = result > 0;
+                response.IsSuccess = rowsAffected > 0;
                 response.Message = Constants.CarCheckedOutSuccessfully;
             }
         }
@@ -109,6 +116,38 @@ public class ParkingRepository(SqlConnection connection) : IParkingRepository
         }
 
         return entities;
+    }
+
+    public async Task<ParkingStats> GetParkingStatistics()
+    {
+        ParkingStats parkingStats = new();
+
+        try
+        {
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = Constants.SpGetParkingStats;
+                connection.Open();
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    while (reader.Read())
+                    {
+                        parkingStats.SpotsAvailable = reader.GetInt32(reader.GetOrdinal("SpotsAvailable"));
+                        parkingStats.TodayRevenue = reader.GetDecimal(reader.GetOrdinal("TodayRevenue"));
+                        parkingStats.AvgCarsPerDayLast30Days = reader.GetDecimal(reader.GetOrdinal("AvgCarsPerDayLast30Days"));
+                        parkingStats.AvgRevenuePerDayLast30Days = reader.GetDecimal(reader.GetOrdinal("AvgRevenuePerDayLast30Days"));
+                    }
+                   }
+                connection.Close();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Exception: {ex.Message}"); return parkingStats;
+        }
+
+        return parkingStats;
     }
 
     private Transaction MapParkingTransaction(SqlDataReader reader) =>

@@ -8,6 +8,7 @@ public interface IParkingService
     public Task<Response<Transaction>> RegisterCarArrival(TagModel model);
     public Task<Response<Transaction>> UpdateCarCheckOutTime(TagModel model);
     public Task<SnapshotViewModel> GetParkingSnapshot();
+    public Task<ParkingStats> GetParkingStatistics();
 }
 
 public class ParkingService(IParkingRepository repository, AppSettings appSettings) : IParkingService
@@ -22,4 +23,6 @@ public class ParkingService(IParkingRepository repository, AppSettings appSettin
             Transactions = await repository.GetParkingSnapshot(),
             AppSettings = appSettings
         };
+
+    public async Task<ParkingStats> GetParkingStatistics() => await repository.GetParkingStatistics();
 }

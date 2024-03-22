@@ -8,6 +8,7 @@ public static class Constants
     public const string SpRegisterCarArrival = "sp_RegisterCarArrival";
     public const string SpUpdateCarCheckOutTime = "sp_UpdateCarCheckOutTime";
     public const string SpGetSnapshot = "sp_GetSnapshot";
+    public const string SpGetParkingStats = "sp_GetParkingStats";
     #endregion
 
     #region Messages
