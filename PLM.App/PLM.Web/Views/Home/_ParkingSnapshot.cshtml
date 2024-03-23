@@ -1,31 +1,39 @@
 ﻿@model SnapshotViewModel
 
-<div class="container">
+<div class="bg-light p-3 rounded-3">
     <div class="row">
+        <h4 class="border-bottom pb-2 mb-3">Snapshot</h4>
         <div class="col">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Tag Number</th>
-                        <th>In</th>
-                        <th>Elapsed Time</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var transaction in Model?.Transactions!)
-                    {
-                        <tr>
-                            <td>@transaction.TagNumber</td>
-                            <td>@transaction.CheckInTime.ToString("HH:mm tt")</td>
-                            <td>@FormatElapsedTime(transaction.ElapsedHours)</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+            <p>Total Spots: <span class="badge rounded-pill bg-primary">@Model.TotalSpots</span></p>
+            <p>Hourly Fee: <span class="badge rounded-pill bg-dark">$@Model.HourlyFee</span></p>
+        </div>
+        <div class="col text-end">
+            <p>Available Spots: <span class="badge rounded-pill bg-success">@Model.AvailableSpots</span></p>
+            <p>Spots Taken: <span class="badge rounded-pill bg-danger">@Model.SpotsTaken</span></p>
         </div>
     </div>
 </div>
-
+<div class="bg-light p-3 mt-3 rounded-3">
+    <table class="table rounded-3 bg-white table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Tag Number</th>
+                <th scope="col">In</th>
+                <th scope="col">Elapsed Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var transaction in Model?.Transactions!)
+            {
+                <tr>
+                    <td>@transaction.TagNumber</td>
+                    <td>@transaction.CheckInTime.ToString("HH:mm tt")</td>
+                    <td>@FormatElapsedTime(transaction.ElapsedHours)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 @functions {
     public string FormatElapsedTime(int elapsedHours) => (elapsedHours == 1 || elapsedHours == 0) ? $"{elapsedHours} hour" : $"{elapsedHours} hours";
 }

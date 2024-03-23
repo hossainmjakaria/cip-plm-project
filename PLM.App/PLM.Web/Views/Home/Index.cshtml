@@ -1,39 +1,38 @@
-﻿@{
-    ViewData["Title"] = "PLM";
-}
-
-<div id="errorMessage" class="alert alert-danger" role="alert" style="display: none;"></div>
-<div id="successMessage" class="alert alert-success" role="alert" style="display: none;"></div>
-
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Check-in/Check-out</h5>
-                    <div class="mb-3">
-                        <label for="tagNumber" class="form-label">Tag Number</label>
-                        <input type="text" class="form-control" id="tagNumber" required>
-                    </div>
-                    <button type="button" class="btn btn-primary" id="checkInBtn">Check In</button>
-                    <button type="button" class="btn btn-danger" id="checkOutBtn">Check Out</button>
-                </div>
-            </div>
+﻿
+<nav class="col col-md-2 bg-light p-3 d-flex flex-column gap-3 justify-content-between">
+    <div>
+        <div class="mb-3 mt-3">
+            <label for="tagNumber" class="form-label">Tag Number: </label>
+            <input type="text" class="form-control" id="tagNumber" placeholder="Value" minlength="1" maxlength="50" required>
         </div>
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Parking Garage Snapshot</h5>
-                    <div id="parkingSnapshot">
-                    </div>
-                </div>
-            </div>
+
+        <div class="mb-3">
+            <div id="errorMessage" class="alert alert-danger" role="alert" style="display: none;"></div>
+            <div id="successMessage" class="alert alert-success" role="alert" style="display: none;"></div>
         </div>
     </div>
-</div>
 
-<button id="loadStatsButton" class="btn btn-primary">Load Statistics</button>
-<div class="modal fade" id="statisticsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+    <div class="d-grid gap-2 ">
+        <div class="row justify-content-between">
+            <div class="col-auto pl-3 pb-3">
+                <span class="fw-bold text-danger">Charged Amount:</span>
+            </div>
+            <div class="col-auto">
+                <span id="totalChargedAmount" class="badge bg-danger">$0.00</span>
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-success" id="checkInBtn">In</button>
+        <button type="button" class="btn btn-danger" id="checkOutBtn">Out</button>
+        <button type="button" class="btn btn-primary" id="loadStatsButton">Stats</button>
+    </div>
+</nav>
+
+<section id="parkingSnapshot" class="col overflow-auto p-3">
+</section>
+
+<div class="modal fade" id="statisticsModal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -41,12 +40,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="statisticsModalBody">
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
-
     </div>
 </div>

@@ -7,7 +7,7 @@ namespace PLM.Web.Controllers
     public class HomeController(IParkingService service) : Controller
     {
         public IActionResult Index() => View();
-        
+
         [HttpPost("/checkin")]
         public async Task<IActionResult> CheckIn([FromBody] TagModel model)
         {
@@ -28,8 +28,8 @@ namespace PLM.Web.Controllers
         public async Task<IActionResult> GetParkingSnapshot()
         {
             return PartialView("_ParkingSnapshot", await service.GetParkingSnapshot());
-        }     
-        
+        }
+
         [HttpGet("/parking-statistics")]
         public async Task<IActionResult> GetParkingStatistics()
         {

@@ -6,17 +6,17 @@ namespace PLM.Web.Infrustuctures;
 
 public interface IParkingRepository
 {
-    public Task<Response<Transaction>> RegisterCarArrival(string tagNumber);
-    public Task<Response<Transaction>> UpdateCarCheckOutTime(string tagNumber, int hourlyFee);
+    public Task<Response<bool>> RegisterCarArrival(string tagNumber);
+    public Task<Response<decimal>> UpdateCarCheckOutTime(string tagNumber, int hourlyFee);
     public Task<IEnumerable<Transaction>> GetParkingSnapshot();
     public Task<ParkingStats> GetParkingStatistics();
 }
 
 public class ParkingRepository(SqlConnection connection) : IParkingRepository
 {
-    public async Task<Response<Transaction>> RegisterCarArrival(string tagNumber)
+    public async Task<Response<bool>> RegisterCarArrival(string tagNumber)
     {
-        var response = new Response<Transaction>();
+        var response = new Response<bool>();
         try
         {
             using (var command = connection.CreateCommand())
@@ -50,9 +50,9 @@ public class ParkingRepository(SqlConnection connection) : IParkingRepository
         return response;
     }
 
-    public async Task<Response<Transaction>> UpdateCarCheckOutTime(string tagNumber, int hourlyFee)
+    public async Task<Response<decimal>> UpdateCarCheckOutTime(string tagNumber, int hourlyFee)
     {
-        var response = new Response<Transaction>();
+        var response = new Response<decimal>();
 
         try
         {
@@ -60,18 +60,24 @@ public class ParkingRepository(SqlConnection connection) : IParkingRepository
             {
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = Constants.SpUpdateCarCheckOutTime;
+
+                SqlParameter rowsAffected = new("@RowsAffected", SqlDbType.Int) { Direction = ParameterDirection.Output };
+                SqlParameter chargedAmount = new("@ChargedAmount", SqlDbType.Int) { Direction = ParameterDirection.Output };
+
                 command.Parameters.AddWithValue("@TagNumber", tagNumber);
                 command.Parameters.AddWithValue("@HourlyFee", hourlyFee);
-                SqlParameter outParameter = new("@RowsAffected", SqlDbType.Int) { Direction = ParameterDirection.Output };
-                command.Parameters.Add(outParameter);
+                command.Parameters.Add(rowsAffected);
+                command.Parameters.Add(chargedAmount);
 
                 connection.Open();
                 await command.ExecuteNonQueryAsync();
-                int rowsAffected = Convert.ToInt32(outParameter.Value);
+                int rows = Convert.ToInt32(rowsAffected.Value);
+                response.Model = Convert.ToDecimal(chargedAmount.Value);
                 connection.Close();
 
-                response.IsSuccess = rowsAffected > 0;
+                response.IsSuccess = rows > 0;
                 response.Message = Constants.CarCheckedOutSuccessfully;
+
             }
         }
         catch (SqlException ex) when (ex.Number == 50000)
@@ -138,7 +144,7 @@ public class ParkingRepository(SqlConnection connection) : IParkingRepository
                         parkingStats.AvgCarsPerDayLast30Days = reader.GetDecimal(reader.GetOrdinal("AvgCarsPerDayLast30Days"));
                         parkingStats.AvgRevenuePerDayLast30Days = reader.GetDecimal(reader.GetOrdinal("AvgRevenuePerDayLast30Days"));
                     }
-                   }
+                }
                 connection.Close();
             }
         }

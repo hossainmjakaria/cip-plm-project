@@ -3,14 +3,17 @@
     const checkOutBtn = document.getElementById('checkOutBtn');
     const tagNumberInput = document.getElementById('tagNumber');
     const parkingSnapshot = document.getElementById('parkingSnapshot');
-
+    const totalChargedAmount = document.getElementById("totalChargedAmount");
     const errorMessage = document.getElementById('errorMessage');
     const successMessage = document.getElementById('successMessage');
+    const loadStatsButton = document.getElementById('loadStatsButton');
     const statisticsModal = document.getElementById('statisticsModal');
     const statisticsModalBody = document.getElementById('statisticsModalBody');
 
     const checkIn = () => {
         const tagNumber = tagNumberInput.value;
+        if (!validateTagNumber(tagNumber)) return;
+
         fetch('/checkin', {
             method: 'POST',
             headers: {
@@ -22,6 +25,7 @@
             .then(data => {
                 showMessage(data);
                 if (data.isSuccess) {
+                    tagNumberInput.value = '';
                     updateParkingSnapshot();
                 }
             })
@@ -41,12 +45,24 @@
             .then(data => {
                 showMessage(data);
                 if (data.isSuccess) {
+                    tagNumberInput.value = '';
+                    totalChargedAmount.textContent = data?.model?.toFixed(2);
                     updateParkingSnapshot();
                 }
             })
             .then(updateParkingSnapshot)
             .catch(error => console.error('Error:', error));
     };
+
+    const validateTagNumber = (value) => {
+        if (value.trim() === "") {
+            errorMessage.textContent = "";
+            showMessage({ isSuccess: false, message: "Tag number is required." })
+            return false;
+        }
+
+        return true;
+    }
 
     const updateParkingSnapshot = (data) => {
         fetch('/parking-snapshot')
@@ -57,11 +73,12 @@
             .catch(error => console.error('Error:', error));
     };
 
-    const showParkingStatistics = (data) => {
+    const showParkingStatistics = () => {
         fetch('/parking-statistics')
             .then(response => response.text())
             .then(data => {
-                modalBody.innerHTML = data;
+                statisticsModalBody.innerHTML = data;
+                $(statisticsModal).modal('show');
             })
             .catch(error => {
                 console.error('Error fetching status:', error);
@@ -81,30 +98,15 @@
         element.style.display = 'block';
         setTimeout(function () {
             element.style.display = 'none';
-        }, 5000);
+        }, 10000);
     };
-
 
     return {
         init: () => {
             updateParkingSnapshot();
             checkInBtn.addEventListener('click', checkIn);
             checkOutBtn.addEventListener('click', checkOut);
-            document.getElementById('loadStatsButton').addEventListener('click', function () {
-                fetch('/parking-statistics')
-                    .then(response => {
-                        if (response.ok) {
-                            return response.text();
-                        } else {
-                            throw new Error('Failed to fetch statistics');
-                        }
-                    })
-                    .then(data => {
-                        statisticsModalBody.innerHTML = data;
-                        $(statisticsModal).modal('show');
-                    })
-                    .catch(error => console.error('Error:', error));
-            });
+            loadStatsButton.addEventListener('click', showParkingStatistics);
         }
     };
 })();
