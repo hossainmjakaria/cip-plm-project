@@ -1,8 +1,9 @@
-﻿using PLM.Web.Models;
+﻿using PLM.Library.Models;
+using PLM.Library.Utility;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace PLM.Web.Infrustuctures;
+namespace PLM.Library.Infrustuctures;
 
 public interface IParkingRepository
 {

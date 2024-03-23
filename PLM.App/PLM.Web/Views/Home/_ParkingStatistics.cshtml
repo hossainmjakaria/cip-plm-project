@@ -1,12 +1,4 @@
-﻿@model ParkingStats
-
-
-@* <p>Spots Available: @Model.SpotsAvailable</p>
-<p>Today's Revenue: $@Model.TodayRevenue</p>
-<p>Average Cars Per Day (Last 30 Days): @Model.AvgCarsPerDayLast30Days</p>
-<p>Average Revenue Per Day (Last 30 Days): $@Model.AvgRevenuePerDayLast30Days</p>
- *@
-
+﻿@model PLM.Library.Models.ParkingStats
 
 <p>Number of spots available as of now: <span class="badge rounded-pill bg-secondary">@Model.SpotsAvailable</span></p>
 <p>Today’s revenue as of now: <span class="badge rounded-pill bg-secondary">$@Model.TodayRevenue</span></p>

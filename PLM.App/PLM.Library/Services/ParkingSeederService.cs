@@ -1,7 +1,7 @@
-﻿using PLM.Web.Infrustuctures;
-using PLM.Web.Models;
+﻿using PLM.Library.Infrustuctures;
+using PLM.Library.Utility;
 
-namespace PLM.Web.Services;
+namespace PLM.Library.Services;
 
 public interface IParkingSeederService
 {

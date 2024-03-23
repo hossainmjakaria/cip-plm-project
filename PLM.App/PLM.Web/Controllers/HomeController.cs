@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
+using PLM.Library.Models;
+using PLM.Library.Services;
+using PLM.Library.Utility;
 using PLM.Web.Models;
-using PLM.Web.Services;
 
 namespace PLM.Web.Controllers
 {
-    public class HomeController(IParkingService service) : Controller
+    public class HomeController(IParkingService service, AppSettings settings) : Controller
     {
         public IActionResult Index() => View();
 
@@ -21,13 +23,20 @@ namespace PLM.Web.Controllers
         {
             return model == null || string.IsNullOrEmpty(model.TagNumber)
                 ? BadRequest("Tag number is required.")
-                : Ok(await service.UpdateCarCheckOutTime(model));
+                : Ok(await service.UpdateCarCheckOutTime(model, settings.HourlyFee));
         }
 
         [HttpGet("/parking-snapshot")]
         public async Task<IActionResult> GetParkingSnapshot()
         {
-            return PartialView("_ParkingSnapshot", await service.GetParkingSnapshot());
+            var model = new SnapshotViewModel
+            {
+                Transactions = await service.GetParkingSnapshot(),
+                TotalSpots = settings.TotalSpots,
+                HourlyFee = settings.HourlyFee
+            };
+
+            return PartialView("_ParkingSnapshot", model);
         }
 
         [HttpGet("/parking-statistics")]

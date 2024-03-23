@@ -1,5 +1,5 @@
-﻿using PLM.Web.Infrustuctures;
-using PLM.Web.Services;
+﻿using PLM.Library.Infrustuctures;
+using PLM.Library.Services;
 using System.Data.SqlClient;
 
 namespace PLM.Web.Configurations

@@ -1,4 +1,4 @@
-﻿namespace PLM.Web.Models;
+﻿namespace PLM.Library.Models;
 
 public record ParkingStats
 {

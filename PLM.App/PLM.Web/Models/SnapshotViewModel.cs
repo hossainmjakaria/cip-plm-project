@@ -1,4 +1,6 @@
-﻿namespace PLM.Web.Models;
+﻿using PLM.Library.Models;
+
+namespace PLM.Web.Models;
 
 
 public record SnapshotViewModel

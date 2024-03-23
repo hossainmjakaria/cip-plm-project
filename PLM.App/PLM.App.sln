@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PLM.Web", "PLM.Web\PLM.Web.csproj", "{01F0F968-2323-4DF7-B665-EF4A6A587E6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PLM.Web", "PLM.Web\PLM.Web.csproj", "{01F0F968-2323-4DF7-B665-EF4A6A587E6B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PLM.Library", "PLM.Library\PLM.Library.csproj", "{364DF4D5-00D2-4D22-BC45-131CB7CDE617}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PLM.Library.Tests", "PLM.Library.Tests\PLM.Library.Tests.csproj", "{C459B748-E027-4172-86A3-FEC25ABD03A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{01F0F968-2323-4DF7-B665-EF4A6A587E6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01F0F968-2323-4DF7-B665-EF4A6A587E6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01F0F968-2323-4DF7-B665-EF4A6A587E6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{364DF4D5-00D2-4D22-BC45-131CB7CDE617}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{364DF4D5-00D2-4D22-BC45-131CB7CDE617}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{364DF4D5-00D2-4D22-BC45-131CB7CDE617}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{364DF4D5-00D2-4D22-BC45-131CB7CDE617}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C459B748-E027-4172-86A3-FEC25ABD03A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C459B748-E027-4172-86A3-FEC25ABD03A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C459B748-E027-4172-86A3-FEC25ABD03A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C459B748-E027-4172-86A3-FEC25ABD03A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
