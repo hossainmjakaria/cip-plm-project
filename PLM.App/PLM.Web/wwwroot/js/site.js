@@ -19,7 +19,7 @@
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ tagNumber })
+            body: JSON.stringify({ tagNumber: tagNumber.trim() })
         })
             .then(response => handleResponse(response, 'Failed to check in car'))
             .then(data => {
@@ -34,19 +34,22 @@
 
     const checkOut = () => {
         const tagNumber = tagNumberInput.value;
+
+        if (!validateTagNumber(tagNumber)) return;
+
         fetch('/checkout', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ tagNumber })
+            body: JSON.stringify({ tagNumber: tagNumber.trim() })
         })
             .then(response => handleResponse(response, 'Failed to check out car'))
             .then(data => {
                 showMessage(data);
                 if (data.isSuccess) {
                     tagNumberInput.value = '';
-                    totalChargedAmount.textContent = data?.model?.toFixed(2);
+                    totalChargedAmount.textContent = `$${data?.model?.toFixed(2)}`;
                     updateParkingSnapshot();
                 }
             })
@@ -98,7 +101,7 @@
         element.style.display = 'block';
         setTimeout(function () {
             element.style.display = 'none';
-        }, 10000);
+        }, 6000);
     };
 
     return {
