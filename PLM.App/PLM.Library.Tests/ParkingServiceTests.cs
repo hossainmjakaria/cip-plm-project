@@ -24,15 +24,17 @@ public class ParkingServiceTests
         Assert.True(result.IsSuccess);
     }
 
-    [Fact]
-    public async Task UpdateCarCheckOutTime_ReturnsAmount_OnSuccess()
+    [Theory]
+    [InlineData("ABC123")]
+    [InlineData("ABC124")]
+    public async Task UpdateCarCheckOutTime_ReturnsAmount_OnSuccess(string tagNumber)
     {
         // Arrange
         var repositoryMock = new Mock<IParkingRepository>();
         repositoryMock.Setup(repo => repo.UpdateCarCheckOutTime(It.IsAny<string>(), It.IsAny<int>())).ReturnsAsync(new Response<decimal> { IsSuccess = true, Model = 50 });
 
         var parkingService = new ParkingService(repositoryMock.Object);
-        var tagModel = new TagModel { TagNumber = "ABC123" };
+        var tagModel = new TagModel { TagNumber = tagNumber };
         int hourlyFee = 10;
 
         // Act
